@@ -28,3 +28,12 @@ Thumbs.db
 
 # Agent metadata
 .hermes/
+
+# Experiment logs
+results/experiment.log
+
+# Backup files
+*.backup
+
+# Regeneratable documents
+*.docx

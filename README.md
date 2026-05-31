@@ -28,8 +28,10 @@ This repository contains the full code, data loaders, experimental results, and 
 | Quantile | 0.8345 |
 | Raw | 0.8050 |
 
-Full paper: [results/paper.pdf](results/paper.pdf) (14 pages)  
+Full paper (English): [results/paper.pdf](results/paper.pdf) (14 pages)  
 LaTeX source: [results/paper.tex](results/paper.tex)
+Full paper (Indonesian): [results/paper-id.pdf](results/paper-id.pdf)  
+LaTeX source: [results/paper-id.tex](results/paper-id.tex)
 
 ## Reproduction
 
@@ -66,6 +68,8 @@ uv run marimo run dashboard.py
   note    = {Unpublished manuscript}
 }
 ```
+
+An Indonesian-language version of this manuscript is also available at `results/paper-id.pdf`.
 
 ## License
 

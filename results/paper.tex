@@ -56,7 +56,7 @@
 % ============================================================
 \begin{abstract}
 \noindent
-Feature scaling is a critical preprocessing step in distance-based machine learning algorithms, yet there is no consensus on which scaling technique performs best across different classifiers, domains, and problem types. This study presents a comprehensive comparative evaluation of six scaling configurations\textemdash Min-Max Normalization, Z-Score Standardization, Robust Scaling (IQR), MaxAbs Scaling, and Quantile Transformation\textemdash against a raw baseline across six benchmark datasets (Pima Indians Diabetes, Breast Cancer Wisconsin, Wine, Digits, Yeast, and Segment) and seven classifiers (k-NN with Euclidean, Manhattan, and Cosine distances, SVM with Linear and RBF kernels, Decision Tree, and Random Forest). Unlike prior work limited to binary classification, this study includes four multi-class datasets spanning three to ten classes. A total of 3,384 classifier configurations were evaluated using 5-fold stratified cross-validation (16,920 total model fits). Results reveal that Z-Score Standardization ranks first overall (0.8561), followed closely by Min-Max (0.8530) and MaxAbs (0.8506). Z-Score significantly outperforms all alternatives except Min-Max ($p=0.123$), with which it is statistically tied. The optimal scaler is strongly domain-dependent: Z-Score excels on medical data and multi-class biological data; Min-Max performs best on bounded feature spaces; MaxAbs is competitive on high-dimensional data; and raw data suffices when features are naturally scaled. Tree-based classifiers are nearly scaling-invariant (improvement $<$0.2\%), while distance-based classifiers improve by 4.5\textendash 7.7\% with scaling. These results, validated across both binary and multi-class settings, provide a practical reference for preprocessing decisions in classification tasks.
+Feature scaling is critical in distance-based machine learning, yet the optimal technique across classifiers, domains, and problem types remains unclear. This study evaluates six scaling configurations---Min-Max Normalization, Z-Score Standardization, Robust Scaling (IQR), MaxAbs Scaling, and Quantile Transformation---against a raw baseline across six benchmark datasets and seven classifiers (k-NN with Euclidean, Manhattan, and Cosine distances, SVM with Linear and RBF kernels, Decision Tree, and Random Forest), including four multi-class datasets (3--10 classes). A total of 3,384 configurations were evaluated with 5-fold stratified cross-validation. Z-Score Standardization ranks first overall (0.8561), followed by Min-Max (0.8530, $p=0.123$---statistically tied) and MaxAbs (0.8506). The optimal scaler is domain-dependent: Z-Score excels on medical and multi-class biological data, Min-Max on bounded feature spaces, MaxAbs on high-dimensional data, and raw data suffices when features are naturally scaled. Distance-based classifiers improve by 4.5--7.7\% with scaling, while tree-based models are nearly invariant ($<$0.2\%). These results provide a practical reference for making preprocessing decisions in classification tasks. The source code and complete implementation of this experiment are available openly on the repository \url{https://github.com/AmZaDin14/feature-scaling-study}.
 
 \vspace{6pt}
 \noindent\textbf{Keywords:} feature scaling, normalization, standardization, robust scaling, MaxAbs, QuantileTransformer, k-nearest neighbors, SVM, multi-class classification, comparative study
@@ -66,9 +66,9 @@ Feature scaling is a critical preprocessing step in distance-based machine learn
 \section{Introduction}
 \label{sec:intro}
 
-The k-Nearest Neighbors (k-NN) algorithm is widely used in classification tasks, operating on the principle of proximity in multidimensional space \cite{bakri2025knn,sultana2022knn}. However, the effectiveness of k-NN\textemdash and all distance-based classifiers\textemdash depends critically on feature scale. In empirical datasets, features often have vastly different units and value ranges, such as age (0\textendash 100) versus income $0$--$10^6$. This creates a fundamental problem: features with larger magnitudes mathematically dominate distance calculations regardless of their predictive significance \cite{mutoffar2025ml,cetin2024distance,pagan2023scaling}.
+The k-Nearest Neighbors (k-NN) algorithm is widely used in classification tasks \cite{cunningham2021knn,halder2024knn}, operating on the principle of proximity in multidimensional space \cite{bakri2025knn,sultana2022knn}. However, the effectiveness of k-NN\textemdash and all distance-based classifiers\textemdash depends critically on feature scale. In empirical datasets, features often have vastly different units and value ranges, such as age (0\textendash 100) versus income $0$--$10^6$. This creates a fundamental problem: features with larger magnitudes mathematically dominate distance calculations regardless of their predictive significance \cite{mutoffar2025ml,cetin2024distance,pagan2023scaling}.
 
-Support Vector Machines (SVM) are also sensitive to feature scale \cite{pinheiro2025scaling}. Regularization penalizes coefficients uniformly, so unscaled features with larger ranges receive disproportionately smaller weights. Tree-based models (Decision Tree, Random Forest) are theoretically scale-invariant \cite{ahsan2021scaling}, as they split on thresholds per feature independently.
+Support Vector Machines (SVM) are also sensitive to feature scale \cite{guido2024svm,pinheiro2025scaling}. Regularization penalizes coefficients uniformly, so unscaled features with larger ranges receive disproportionately smaller weights. Tree-based models (Decision Tree, Random Forest) are theoretically scale-invariant \cite{ahsan2021scaling}, as they split on thresholds per feature independently.
 
 Despite the well-known importance of feature scaling, the literature lacks a comprehensive benchmark that simultaneously compares multiple scaling techniques across multiple classifier families on both binary and multi-class problems. Existing studies tend to restrict comparisons to Min-Max versus Z-Score on a single algorithm \cite{henderi2021minmax,manurung2025knn}, or evaluate a single technique across multiple algorithms \cite{pagan2023scaling}. No prior study has systematically compared six scaling techniques\textemdash including MaxAbs Scaling and Quantile Transformation\textemdash across seven classifiers on both binary and multi-class datasets with statistical validation.
 
@@ -131,7 +131,7 @@ This preserves sparsity (zero values remain zero) and is commonly used for spars
   x_{\text{quantile}} = F^{-1}_{\text{uniform}}(F_{\text{empirical}}(x))
   \label{eq:quantile}
 \end{equation}
-Unlike the linear methods above, Quantile Transformation is non-linear and can handle arbitrary distributions \cite{zhu2023quantile}.
+Unlike the linear methods above, Quantile Transformation is non-linear and can handle arbitrary distributions \cite{demircioglu2024normalization}.
 
 Table~\ref{tbl:scalers} summarizes all six techniques.
 
@@ -241,20 +241,24 @@ No. & Classifier & Parameters \\
 Each dataset was processed as follows:
 \begin{enumerate}
   \item \textbf{Preprocessing:} Invalid zeros imputed with median (Pima only).
-  \item \textbf{Cross-validation:} Stratified 5-fold split preserving class distribution.
+  \item \textbf{Cross-validation:} Stratified 5-fold split preserving class distribution \cite{bates2023crossval}.
   \item \textbf{Scaling:} Each scaler fitted on training folds, applied to both training and validation folds independently\textemdash ensuring no data leakage.
   \item \textbf{Evaluation:} Classifier trained on scaled training fold, evaluated on scaled validation fold.
   \item \textbf{Metrics:} Accuracy (mean $\pm$ std across folds), precision, recall, F1-score, AUC, specificity, sensitivity.
 \end{enumerate}
 
-For multi-class evaluation, precision, recall, and F1 were computed with weighted averaging. AUC was computed using the one-vs-rest (OvR) scheme. Sensitivity and specificity were macro-averaged across all classes.
+For multi-class evaluation, precision, recall, and F1 were computed with weighted averaging to account for class imbalance. AUC was computed using the one-vs-rest (OvR) scheme. Sensitivity and specificity were macro-averaged across all classes, giving equal weight to each class regardless of its prevalence.
+
+The choice of $k=1,\dots,30$ for k-NN covers the full practical range from highly local ($k=1$) to nearly global ($k=30$) decision boundaries, capturing both overfitting and underfitting regimes. Non-kNN classifiers used scikit-learn default hyperparameters: SVM with $C=1$ and RBF $\gamma=1/n_{\text{features}}$, Decision Tree with unbounded depth and Gini impurity, and Random Forest with 100 trees. These defaults are well-established baselines in comparative ML studies and avoid conflating scaling effects with hyperparameter tuning artifacts, which is deferred to future work.
+
+The choice of stratified 5-fold cross-validation balances bias and variance while ensuring each fold preserves the original class proportions. Five folds provide a favorable tradeoff between the high variance of 2-fold CV and the high computational cost of 10-fold CV, and stratified sampling prevents optimistic bias in minority classes, particularly critical for multi-class datasets with imbalanced distributions (e.g., Yeast with 10 classes).
 
 In total: 6 datasets $\times$ 6 scalers $\times$ (3 k-NN variants $\times$ 30 $k$-values + 4 non-kNN classifiers) = \textbf{3,384 configurations}, each evaluated with 5-fold stratified cross-validation (\textbf{16,920 total model fits}).
 
 \subsection{Statistical Analysis}
 \label{sec:stats}
 
-Paired Wilcoxon signed-rank tests were conducted for each scaler pair across all matched (dataset, classifier, $k$-value) configurations. This non-parametric test was chosen because performance differences between scalers are not guaranteed to follow a normal distribution. Significance was assessed at $\alpha = 0.05$.
+Paired Wilcoxon signed-rank tests \cite{amorim2023scaling} were conducted for each scaler pair across all matched (dataset, classifier, $k$-value) configurations. This non-parametric test was chosen because performance differences between scalers are not guaranteed to follow a normal distribution. Significance was assessed at $\alpha = 0.05$.
 
 % ============================================================
 \section{Results}
@@ -448,7 +452,7 @@ Based on the synthesis above, we propose the following decision framework:
 \subsection{Comparison with Prior Work}
 \label{sec:comparison}
 
-Our findings align with and extend previous comparative studies. Henderi et al.~\cite{henderi2021minmax} found Min-Max superior on breast cancer classification with k-NN\textemdash we confirm this for k-NN but show that Z-Score surpasses Min-Max when the classifier is SVM and when the evaluation includes multi-class data. Pinheiro et al.~\cite{pinheiro2025scaling} demonstrated that ensemble methods are robust to scaling while SVM is highly sensitive; our results corroborate this and extend the finding to MaxAbs Scaling, which performs competitively with Z-Score across most classifier\textendash dataset combinations.
+Our findings align with and extend previous comparative studies, particularly those of de Amorim et al. \cite{amorim2023scaling} and Demircioglu \cite{demircioglu2024normalization}. Henderi et al.~\cite{henderi2021minmax} found Min-Max superior on breast cancer classification with k-NN\textemdash we confirm this for k-NN but show that Z-Score surpasses Min-Max when the classifier is SVM and when the evaluation includes multi-class data. Pinheiro et al.~\cite{pinheiro2025scaling} demonstrated that ensemble methods are robust to scaling while SVM is highly sensitive; our results corroborate this and extend the finding to MaxAbs Scaling, which performs competitively with Z-Score across most classifier\textendash dataset combinations.
 
 Our inclusion of MaxAbs Scaling and Quantile Transformation\textemdash absent from most prior comparisons~\cite{pagan2023scaling,henderi2021minmax,firmansyah2024stroke,pristyanto2022diabetes}\textemdash reveals that MaxAbs is a viable alternative to Min-Max, particularly on high-dimensional data.
 
