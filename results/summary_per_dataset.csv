@@ -1,0 +1,17 @@
+dataset,scaler_label,mean,std,max
+Breast Cancer Wisconsin,Min-Max Normalization,0.9364,0.029,0.9766
+Breast Cancer Wisconsin,None (Raw),0.9176,0.0164,0.9415
+Breast Cancer Wisconsin,Robust Scaling (IQR),0.9422,0.0145,0.9766
+Breast Cancer Wisconsin,Z-Score Standardization,0.953,0.0116,0.9825
+Digits (Even vs Odd),Min-Max Normalization,0.9845,0.0088,0.9907
+Digits (Even vs Odd),None (Raw),0.9828,0.0257,0.9926
+Digits (Even vs Odd),Robust Scaling (IQR),0.9482,0.0191,0.987
+Digits (Even vs Odd),Z-Score Standardization,0.9773,0.0087,0.9889
+Pima Indians Diabetes,Min-Max Normalization,0.7336,0.0242,0.7706
+Pima Indians Diabetes,None (Raw),0.7072,0.0495,0.7532
+Pima Indians Diabetes,Robust Scaling (IQR),0.7234,0.0138,0.7489
+Pima Indians Diabetes,Z-Score Standardization,0.7413,0.0152,0.7749
+Wine (Class 0 vs rest),Min-Max Normalization,0.9829,0.0116,1.0
+Wine (Class 0 vs rest),None (Raw),0.8851,0.0492,0.9259
+Wine (Class 0 vs rest),Robust Scaling (IQR),0.9693,0.0157,1.0
+Wine (Class 0 vs rest),Z-Score Standardization,0.9777,0.0123,1.0

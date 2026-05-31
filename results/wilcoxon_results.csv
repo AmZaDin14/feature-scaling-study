@@ -1,0 +1,13 @@
+scaler_1,scaler_2,statistic,p_value,significant,direction,mean_diff,n_pairs
+None (Raw),Min-Max,5904.5,0.0,True,<,-0.0193,376
+None (Raw),Z-Score,7455.0,0.0,True,<,-0.0273,376
+None (Raw),Robust,23229.5,0.0,True,<,-0.0112,376
+Min-Max,None (Raw),5904.5,0.0,True,>,0.0193,376
+Min-Max,Z-Score,24598.5,0.030257,True,<,-0.008,376
+Min-Max,Robust,19892.5,0.0,True,>,0.0081,376
+Z-Score,None (Raw),7455.0,0.0,True,>,0.0273,376
+Z-Score,Min-Max,24598.5,0.030257,True,>,0.008,376
+Z-Score,Robust,1674.5,0.0,True,>,0.0161,376
+Robust,None (Raw),23229.5,0.0,True,>,0.0112,376
+Robust,Min-Max,19892.5,0.0,True,<,-0.0081,376
+Robust,Z-Score,1674.5,0.0,True,<,-0.0161,376

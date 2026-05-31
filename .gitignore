@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Data files (auto-downloaded by loader)
+src/feature_scaling_study/data/pima_diabetes.csv
+
+# Results that are regeneratable
+results/results.csv
+results/results.xlsx
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.synctex.gz
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Agent metadata
+.hermes/
