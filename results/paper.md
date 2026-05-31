@@ -5,6 +5,7 @@
 ¹,²,³,⁴ Magister Ilmu Komputer, Fakultas Teknik dan Ilmu Komputer, Universitas Teknokrat Indonesia
 
 \*_Corresponding author:_ amri_reza_wahyudin@teknokrat.ac.id
+\*Repository: https://github.com/AmZaDin14/feature-scaling-study
 
 ---
 
